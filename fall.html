@@ -372,7 +372,7 @@ font-size:17px;
 <div class="topbar">
 
 <button class="songBtn"
-onclick="window.location='tribes.html'">
+onclick="window.location='Tribes.html'">
 
 Previous Song
 
@@ -748,22 +748,19 @@ function normalize(chord){
 // Change ONE chord
 function transposeChord(chord){
 
-    // Root
-    let match = chord.match(/^[A-G](#|b)?/);
+    return chord.replace(/[A-G](#|b)?/g, function(note){
 
-    if(!match)
-        return chord;
+        let root = normalize(note);
 
-    let root = normalize(match[0]);
+        let index = notes.indexOf(root);
 
-    let index = notes.indexOf(root);
+        if(index === -1) return note;
 
-    if(index==-1)
-        return chord;
+        return notes[(index + transpose + 12) % 12];
 
-    let newRoot = notes[(index+transpose+12)%12];
+    });
 
-    return chord.replace(match[0],newRoot);
+
 
 }
 
