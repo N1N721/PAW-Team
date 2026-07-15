@@ -364,6 +364,41 @@ font-size:17px;
 
 }
 
+#pauseScroll{
+    position:fixed;
+    bottom:25px;
+    right:25px;
+
+    padding:14px 20px;
+
+    border:none;
+    border-radius:50px;
+
+    background:#ef4444;
+    color:#fff;
+
+    font-size:16px;
+    font-weight:600;
+
+    cursor:pointer;
+
+    opacity:0;
+    visibility:hidden;
+
+    transition:.3s;
+
+    z-index:9999;
+}
+
+#pauseScroll.show{
+    opacity:1;
+    visibility:visible;
+}
+
+#pauseScroll:hover{
+    background:#dc2626;
+}
+
 </style>
 </head>
 
@@ -897,7 +932,66 @@ document.getElementById("slowBtn").onclick = () => speed = 1;
 document.getElementById("normalBtn").onclick = () => speed = 2;
 document.getElementById("fastBtn").onclick = () => speed = 4;
 
+let autoScrolling = false;
+let scrollInterval = null;
+let userStarted = false;
+
+const pauseBtn = document.getElementById("pauseScroll");
+
+// Start auto-scroll
+function startAutoScroll(){
+
+    if(autoScrolling) return;
+
+    autoScrolling = true;
+
+    pauseBtn.classList.add("show");
+
+    scrollInterval = setInterval(()=>{
+
+        window.scrollBy({
+            top:1,
+            behavior:"auto"
+        });
+
+        // Stop at bottom
+        if(window.innerHeight + window.scrollY >= document.body.scrollHeight-2){
+
+            stopAutoScroll();
+
+        }
+
+    },18);
+
+}
+
+// Stop auto-scroll
+function stopAutoScroll(){
+
+    autoScrolling = false;
+
+    clearInterval(scrollInterval);
+
+    pauseBtn.classList.remove("show");
+
+}
+
+// User scroll starts auto-scroll
+window.addEventListener("scroll",()=>{
+
+    if(userStarted) return;
+
+    userStarted = true;
+
+    setTimeout(startAutoScroll,400);
+
+});
+
+// Pause button
+pauseBtn.onclick = stopAutoScroll;
+
 </script>
 
+<button id="pauseScroll">⏸ Pause</button>
 </body>
 </html>
