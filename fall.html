@@ -6,363 +6,176 @@
 <title>Chord Viewer</title>
 
 <style>
-
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-}
-
 body{
-    font-family:Arial,Helvetica,sans-serif;
-    background:#1d1d1d;
+    font-family:'Poppins',sans-serif;
+    background:linear-gradient(135deg,#0f172a,#172554,#1e3a8a);
     color:#fff;
     overflow-x:hidden;
+    min-height:100vh;
 }
 
-/* =======================
-   TOP BAR
-======================= */
+body::before{
+    content:"";
+    position:fixed;
+    width:350px;
+    height:350px;
+    border-radius:50%;
+    background:#3b82f6;
+    opacity:.18;
+    top:-120px;
+    left:-120px;
+    filter:blur(30px);
+    z-index:-2;
+}
+
+body::after{
+    content:"";
+    position:fixed;
+    width:420px;
+    height:420px;
+    border-radius:50%;
+    background:#60a5fa;
+    opacity:.15;
+    bottom:-180px;
+    right:-180px;
+    filter:blur(35px);
+    z-index:-2;
+}
 
 .topbar{
     position:sticky;
     top:0;
     z-index:999;
-    background:#2b2b2b;
-    border-bottom:1px solid #444;
+    background:rgba(255,255,255,.12);
+    backdrop-filter:blur(18px);
+    border-bottom:1px solid rgba(255,255,255,.15);
+    padding:15px;
+}
+
+.toolbar button,
+.songBtn{
+    background:rgba(255,255,255,.15);
+    backdrop-filter:blur(12px);
+    color:#fff;
+    border:none;
+    border-radius:16px;
+    padding:12px 18px;
+    font-size:15px;
+    cursor:pointer;
+    transition:.25s;
+}
+
+.toolbar button:hover,
+.songBtn:hover{
+    background:#3b82f6;
+    transform:translateY(-2px);
+}
+
+.song-header{
+    max-width:900px;
+    margin:25px auto;
+    padding:25px 30px;
+    background:rgba(255,255,255,.12);
+    backdrop-filter:blur(18px);
+    border:1px solid rgba(255,255,255,.15);
+    border-radius:24px;
+}
+
+.song-title{
+    font-size:38px;
+    font-weight:700;
+}
+
+.song-artist{
+    color:#d1d5db;
+    margin-top:6px;
+}
+
+.song-info{
+    display:flex;
+    flex-wrap:wrap;
+    gap:20px;
+    margin-top:18px;
+    color:#e5e7eb;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+    padding:20px;
+}
+
+.song{
+    background:rgba(255,255,255,.10);
+    backdrop-filter:blur(20px);
+    border:1px solid rgba(255,255,255,.15);
+    border-radius:24px;
+    padding:30px;
+    box-shadow:0 15px 45px rgba(0,0,0,.25);
+    overflow:auto;
+}
+
+.song pre{
+    white-space:pre;
+    min-width:max-content;
+    font-size:22px;
+    line-height:2;
+    font-family:Consolas,monospace;
+}
+
+.chord{
+    color:#60a5fa;
+    font-weight:700;
+}
+
+hr{
+    border:none;
+    border-top:1px solid rgba(255,255,255,.15);
+    margin:20px 0;
+}
+
+@media(max-width:600px){
+
+.topbar{
     padding:12px;
 }
 
 .toolbar{
     display:flex;
     flex-wrap:wrap;
-    gap:10px;
-    align-items:center;
-    justify-content:center;
+    gap:8px;
 }
 
 .toolbar button{
-    background:#3d3d3d;
-    color:white;
-    border:none;
-    padding:10px 16px;
-    border-radius:6px;
-    cursor:pointer;
-    transition:.2s;
-    font-size:15px;
+    flex:1;
 }
-
-.toolbar button:hover{
-    background:#575757;
-}
-
-.toolbar input[type=range]{
-    width:140px;
-}
-
-.toolbar span{
-    font-weight:bold;
-}
-
-/* =======================
- SONG HEADER
-======================= */
 
 .song-header{
-
-    max-width:900px;
-    margin:auto;
-    padding:25px;
-
+    margin:15px;
+    padding:18px;
 }
 
 .song-title{
-
-    font-size:36px;
-    font-weight:bold;
-
+    font-size:28px;
 }
 
-.song-artist{
-
-    color:#bbbbbb;
-    margin-top:6px;
-    font-size:18px;
-
+.song pre{
+    font-size:16px;
+    line-height:1.8;
 }
 
-.song-info{
-
-    display:flex;
-    flex-wrap:wrap;
-    gap:20px;
-    margin-top:18px;
-    color:#d6d6d6;
+.song{
+    padding:18px;
 }
-
-/* =======================
- SONG BODY
-======================= */
 
 .container{
-
-    max-width:900px;
-    margin:auto;
-    padding:20px;
-
-}
-
-.song{
-
-    background:#262626;
-    border-radius:10px;
-    padding:30px;
-    border:1px solid #3d3d3d;
-
-}
-
-.song pre{
-
-    white-space:pre-wrap;
-    word-wrap:break-word;
-    line-height:1.7;
-    font-size:15px;
-    font-family:Consolas,monospace;
-
-}
-
-/* =======================
- CHORD COLOR
-======================= */
-
-.chord{
-
-    color:#52d273;
-    font-weight:bold;
-
-}
-
-/* =======================
- RESPONSIVE
-======================= */
-
-@media(max-width:900px){
-
-.song{
-
-padding:20px;
-
-}
-
-.song pre{
-
-font-size:20px;
-
-}
-
-.song-title{
-
-font-size:30px;
-
+    padding:10px;
 }
 
 }
 
-@media(max-width:600px){
 
-.toolbar{
 
-justify-content:flex-start;
-
-}
-
-.toolbar button{
-
-flex:1 1 45%;
-
-}
-
-.toolbar input{
-
-width:100%;
-
-}
-
-.song{
-
-padding:18px;
-
-}
-
-.song pre{
-
-font-size:18px;
-line-height:1.9;
-
-}
-
-.song-title{
-
-font-size:24px;
-
-}
-
-.song-info{
-
-gap:10px;
-
-}
-
-}
-/* ===========================
-SONGS
-=========================== */
-
-.songMenu{
-
-display:none;
-
-animation:fade .35s ease;
-
-}
-
-.songTitle{
-
-font-size:34px;
-
-font-weight:700;
-
-margin-bottom:30px;
-
-color:white;
-
-letter-spacing:3px;
-
-}
-
-.songBtn{
-
-width:100%;
-
-padding:18px;
-
-margin-bottom:18px;
-
-border:none;
-
-border-radius:18px;
-
-background:rgba(255,255,255,.15);
-
-color:white;
-
-font-size:19px;
-
-font-weight:600;
-
-cursor:pointer;
-
-transition:.25s;
-
-backdrop-filter:blur(10px);
-
-}
-
-.songBtn:hover{
-
-background:#3b82f6;
-
-transform:translateY(-4px);
-
-}
-
-.back{
-
-margin-top:10px;
-
-width:100%;
-
-padding:15px;
-
-border:none;
-
-border-radius:16px;
-
-background:#ef4444;
-
-color:white;
-
-font-size:17px;
-
-cursor:pointer;
-
-transition:.25s;
-
-}
-
-.back:hover{
-
-background:#dc2626;
-
-}
-
-@keyframes fade{
-
-from{
-
-opacity:0;
-
-transform:translateY(30px);
-
-}
-
-to{
-
-opacity:1;
-
-transform:translateY(0);
-
-}
-
-}
-
-/* Mobile */
-
-@media(max-width:500px){
-
-.card{
-
-padding:25px;
-
-}
-
-.month{
-
-font-size:36px;
-
-letter-spacing:5px;
-
-}
-
-.date{
-
-font-size:75px;
-
-}
-
-.songTitle{
-
-font-size:28px;
-
-}
-
-.songBtn{
-
-font-size:17px;
-
-}
-
-}
 </style>
 </head>
 
@@ -371,7 +184,7 @@ font-size:17px;
 <div class="topbar">
 
 <button class="songBtn"
-onclick="window.location='tribes.html'">
+onclick="window.location='Tribes.html'">
 
 Previous Song
 
