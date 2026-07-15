@@ -393,11 +393,13 @@ Next Song
 <input
     type="range"
     id="speedSlider"
-    min="1"
+    min="0.6"
     max="5"
-    value="1">
+    step="0.1"
+    value="0.6">
 
-<span id="speedValue">1x</span>
+<span id="speedValue">0.6x</span>
+
 
 </div>
 
@@ -781,10 +783,11 @@ const speedSlider = document.getElementById("speedSlider");
 const speedValue = document.getElementById("speedValue");
 
 let scrollSpeed = Number(speedSlider.value);
+speedValue.textContent = scrollSpeed.toFixed(1) + "x";
 
 speedSlider.addEventListener("input", function () {
     scrollSpeed = Number(this.value);
-    speedValue.textContent = this.value;
+    speedValue.textContent = scrollSpeed.toFixed(1) + "x";
 });
 
 function scrollLoop(){
