@@ -388,7 +388,16 @@ Next Song
 <button id="transposeDown">-</button>
 <button id="transposeUp">+</button>
 
+<button id="autoScrollBtn">▶ Auto</button>
 
+<input
+    type="range"
+    id="speedSlider"
+    min="1"
+    max="5"
+    value="1">
+
+<span id="speedValue">1x</span>
 
 </div>
 
@@ -759,40 +768,77 @@ document
     updateSong();
 
 };
-
+updateSong();
 // ==========================
-// FONT SIZE
+// AUTO SCROLL
 // ==========================
 
-let size=22;
+const autoBtn = document.getElementById("autoScrollBtn");
 
-const pre=song;
+let autoScrolling = false;
+let animationId = null;
+const speedSlider = document.getElementById("speedSlider");
+const speedValue = document.getElementById("speedValue");
 
-document
-.getElementById("fontPlus")
-.onclick=function(){
+let scrollSpeed = Number(speedSlider.value);
 
-    size+=2;
+speedSlider.addEventListener("input", function () {
+    scrollSpeed = Number(this.value);
+    speedValue.textContent = this.value;
+});
 
-    pre.style.fontSize=size+"px";
+function scrollLoop(){
 
-};
+    if(!autoScrolling) return;
 
-document
-.getElementById("fontMinus")
-.onclick=function(){
+    window.scrollBy(0, scrollSpeed);
 
-    if(size>12){
+    if(window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2){
 
-        size-=2;
-
-        pre.style.fontSize=size+"px";
+        stopAutoScroll();
+        return;
 
     }
 
-};
+    animationId = requestAnimationFrame(scrollLoop);
 
-updateSong();
+}
+
+function startAutoScroll(){
+
+    autoScrolling = true;
+
+    autoBtn.textContent = "⏸ Pause";
+    autoBtn.classList.add("active");
+
+    animationId = requestAnimationFrame(scrollLoop);
+
+}
+
+function stopAutoScroll(){
+
+    autoScrolling = false;
+
+    cancelAnimationFrame(animationId);
+
+    autoBtn.textContent = "▶ Auto";
+    autoBtn.classList.remove("active");
+
+}
+
+autoBtn.addEventListener("click", function(){
+
+    if(autoScrolling){
+
+        stopAutoScroll();
+
+    }else{
+
+        startAutoScroll();
+
+    }
+
+});
 
 </script>
 

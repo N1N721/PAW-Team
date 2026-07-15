@@ -364,39 +364,49 @@ font-size:17px;
 
 }
 
-#pauseScroll{
-    position:fixed;
-    bottom:25px;
-    right:25px;
+#autoScrollBtn{
 
-    padding:14px 20px;
+background:#2563eb;
+color:white;
 
-    border:none;
-    border-radius:50px;
+transition:.25s;
 
-    background:#ef4444;
-    color:#fff;
+}
 
-    font-size:16px;
-    font-weight:600;
+#autoScrollBtn:hover{
 
+background:#1d4ed8;
+
+}
+
+#autoScrollBtn.active{
+
+background:#ef4444;
+
+}
+
+#speedSlider{
+    width:120px;
     cursor:pointer;
-
-    opacity:0;
-    visibility:hidden;
-
-    transition:.3s;
-
-    z-index:9999;
 }
 
-#pauseScroll.show{
-    opacity:1;
-    visibility:visible;
+#speedValue{
+    min-width:28px;
+    color:white;
+    font-weight:bold;
+    text-align:center;
 }
 
-#pauseScroll:hover{
-    background:#dc2626;
+@media(max-width:600px){
+
+#speedSlider{
+    width:100%;
+}
+
+#speedValue{
+    width:40px;
+}
+
 }
 
 </style>
@@ -421,7 +431,16 @@ Previous Song
 
 <button id="transposeUp">+</button><br>
 
+<button id="autoScrollBtn">▶ Auto</button>
 
+<input
+    type="range"
+    id="speedSlider"
+    min="0.2"
+    max="5"
+    value="0.2">
+
+<span id="speedValue">0.5x</span>
 
 </div>
 
@@ -845,153 +864,83 @@ document
 
 };
 
-// ==========================
-// FONT SIZE
-// ==========================
-
-let size=22;
-
-const pre=song;
-
-document
-.getElementById("fontPlus")
-.onclick=function(){
-
-    size+=2;
-
-    pre.style.fontSize=size+"px";
-
-};
-
-document
-.getElementById("fontMinus")
-.onclick=function(){
-
-    if(size>12){
-
-        size-=2;
-
-        pre.style.fontSize=size+"px";
-
-    }
-
-};
 
 updateSong();
-
 // ==========================
 // AUTO SCROLL
 // ==========================
 
-let scrolling = false;
-let speed = 2;          // pixels per frame
+const autoBtn = document.getElementById("autoScrollBtn");
+
+let autoScrolling = false;
 let animationId = null;
+const speedSlider = document.getElementById("speedSlider");
+const speedValue = document.getElementById("speedValue");
 
-const scrollBtn = document.getElementById("scrollBtn");
+let scrollSpeed = Number(speedSlider.value);
 
-function autoScroll() {
+speedSlider.addEventListener("input", function(){
 
-    if (!scrolling) return;
+    scrollSpeed = Number(this.value);
 
-    window.scrollTo(0, window.pageYOffset + speed);
+    speedValue.textContent = this.value + "x";
 
-    // Stop at bottom
-    if (window.innerHeight + window.pageYOffset >= document.documentElement.scrollHeight - 2) {
+});
 
-        scrolling = false;
-        scrollBtn.textContent = "▶ Start";
-        cancelAnimationFrame(animationId);
+function scrollLoop(){
+
+    if(!autoScrolling) return;
+
+    window.scrollBy(0, scrollSpeed);
+
+    if(window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2){
+
+        stopAutoScroll();
         return;
 
     }
 
-    animationId = requestAnimationFrame(autoScroll);
+    animationId = requestAnimationFrame(scrollLoop);
+
 }
 
-scrollBtn.addEventListener("click", function () {
-
-    scrolling = !scrolling;
-
-    if (scrolling) {
-
-        scrollBtn.textContent = "⏸ Pause";
-        autoScroll();
-
-    } else {
-
-        scrollBtn.textContent = "▶ Start";
-        cancelAnimationFrame(animationId);
-
-    }
-
-});
-
-// SPEED BUTTONS
-
-document.getElementById("slowBtn").onclick = () => speed = 1;
-document.getElementById("normalBtn").onclick = () => speed = 2;
-document.getElementById("fastBtn").onclick = () => speed = 4;
-
-let autoScrolling = false;
-let scrollInterval = null;
-let userStarted = false;
-
-const pauseBtn = document.getElementById("pauseScroll");
-
-// Start auto-scroll
 function startAutoScroll(){
-
-    if(autoScrolling) return;
 
     autoScrolling = true;
 
-    pauseBtn.classList.add("show");
+    autoBtn.textContent = "⏸ Pause";
+    autoBtn.classList.add("active");
 
-    scrollInterval = setInterval(()=>{
-
-        window.scrollBy({
-            top:1,
-            behavior:"auto"
-        });
-
-        // Stop at bottom
-        if(window.innerHeight + window.scrollY >= document.body.scrollHeight-2){
-
-            stopAutoScroll();
-
-        }
-
-    },18);
+    animationId = requestAnimationFrame(scrollLoop);
 
 }
 
-// Stop auto-scroll
 function stopAutoScroll(){
 
     autoScrolling = false;
 
-    clearInterval(scrollInterval);
+    cancelAnimationFrame(animationId);
 
-    pauseBtn.classList.remove("show");
+    autoBtn.textContent = "▶ Auto";
+    autoBtn.classList.remove("active");
 
 }
 
-// User scroll starts auto-scroll
-window.addEventListener("scroll",()=>{
+autoBtn.addEventListener("click", function(){
 
-    if(userStarted) return;
+    if(autoScrolling){
 
-    userStarted = true;
+        stopAutoScroll();
 
-    setTimeout(startAutoScroll,400);
+    }else{
+
+        startAutoScroll();
+
+    }
 
 });
-
-// Pause button
-pauseBtn.onclick = stopAutoScroll;
-
 </script>
 
-<button id="pauseScroll">⏸ Pause</button>
+
 </body>
 </html>
