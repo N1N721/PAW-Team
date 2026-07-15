@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chord Viewer</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:Arial,Helvetica,sans-serif;
+    background:#1d1d1d;
+    color:#fff;
+    overflow-x:hidden;
+}
+
+/* =======================
+   TOP BAR
+======================= */
+
+.topbar{
+    position:sticky;
+    top:0;
+    z-index:999;
+    background:#2b2b2b;
+    border-bottom:1px solid #444;
+    padding:12px;
+}
+
+.toolbar{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    align-items:center;
+    justify-content:center;
+}
+
+.toolbar button{
+    background:#3d3d3d;
+    color:white;
+    border:none;
+    padding:10px 16px;
+    border-radius:6px;
+    cursor:pointer;
+    transition:.2s;
+    font-size:15px;
+}
+
+.toolbar button:hover{
+    background:#575757;
+}
+
+.toolbar input[type=range]{
+    width:140px;
+}
+
+.toolbar span{
+    font-weight:bold;
+}
+
+/* =======================
+ SONG HEADER
+======================= */
+
+.song-header{
+
+    max-width:900px;
+    margin:auto;
+    padding:25px;
+
+}
+
+.song-title{
+
+    font-size:36px;
+    font-weight:bold;
+
+}
+
+.song-artist{
+
+    color:#bbbbbb;
+    margin-top:6px;
+    font-size:18px;
+
+}
+
+.song-info{
+
+    display:flex;
+    flex-wrap:wrap;
+    gap:20px;
+    margin-top:18px;
+    color:#d6d6d6;
+}
+
+/* =======================
+ SONG BODY
+======================= */
+
+.container{
+
+    max-width:900px;
+    margin:auto;
+    padding:20px;
+
+}
+
+.song{
+
+    background:#262626;
+    border-radius:10px;
+    padding:30px;
+    border:1px solid #3d3d3d;
+
+}
+
+.song pre{
+
+    white-space:pre-wrap;
+    word-wrap:break-word;
+    line-height:2.1;
+    font-size:22px;
+    font-family:Consolas,monospace;
+
+}
+
+/* =======================
+ CHORD COLOR
+======================= */
+
+.chord{
+
+    color:#52d273;
+    font-weight:bold;
+
+}
+
+/* =======================
+ RESPONSIVE
+======================= */
+
+@media(max-width:900px){
+
+.song{
+
+padding:20px;
+
+}
+
+.song pre{
+
+font-size:20px;
+
+}
+
+.song-title{
+
+font-size:30px;
+
+}
+
+}
+
+@media(max-width:600px){
+
+.toolbar{
+
+justify-content:flex-start;
+
+}
+
+.toolbar button{
+
+flex:1 1 45%;
+
+}
+
+.toolbar input{
+
+width:100%;
+
+}
+
+.song{
+
+padding:18px;
+
+}
+
+.song pre{
+
+font-size:18px;
+line-height:1.9;
+
+}
+
+.song-title{
+
+font-size:24px;
+
+}
+
+.song-info{
+
+gap:10px;
+
+}
+
+}
+/* ===========================
+SONGS
+=========================== */
+
+.songMenu{
+
+display:none;
+
+animation:fade .35s ease;
+
+}
+
+.songTitle{
+
+font-size:34px;
+
+font-weight:700;
+
+margin-bottom:30px;
+
+color:white;
+
+letter-spacing:3px;
+
+}
+
+.songBtn{
+
+width:100%;
+
+padding:18px;
+
+margin-bottom:18px;
+
+border:none;
+
+border-radius:18px;
+
+background:rgba(255,255,255,.15);
+
+color:white;
+
+font-size:19px;
+
+font-weight:600;
+
+cursor:pointer;
+
+transition:.25s;
+
+backdrop-filter:blur(10px);
+
+}
+
+.songBtn:hover{
+
+background:#3b82f6;
+
+transform:translateY(-4px);
+
+}
+
+.back{
+
+margin-top:10px;
+
+width:100%;
+
+padding:15px;
+
+border:none;
+
+border-radius:16px;
+
+background:#ef4444;
+
+color:white;
+
+font-size:17px;
+
+cursor:pointer;
+
+transition:.25s;
+
+}
+
+.back:hover{
+
+background:#dc2626;
+
+}
+
+@keyframes fade{
+
+from{
+
+opacity:0;
+
+transform:translateY(30px);
+
+}
+
+to{
+
+opacity:1;
+
+transform:translateY(0);
+
+}
+
+}
+
+/* Mobile */
+
+@media(max-width:500px){
+
+.card{
+
+padding:25px;
+
+}
+
+.month{
+
+font-size:36px;
+
+letter-spacing:5px;
+
+}
+
+.date{
+
+font-size:75px;
+
+}
+
+.songTitle{
+
+font-size:28px;
+
+}
+
+.songBtn{
+
+font-size:17px;
+
+}
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="topbar">
+
+<button class="songBtn"
+onclick="window.location='fall.html'">
+
+Next Song
+
+</button>
+
+<div class="toolbar">
+
+
+
+<span id="currentKey">Key: D</span>
+  
+
+<button id="transposeDown">-</button>
+<button id="transposeUp">+</button>
+
+
+
+</div>
+
+</div>
+
+<div class="song-header">
+
+<div class="song-title">
+
+Tribes
+
+</div>
+
+<div class="song-artist">
+
+Victory Worship
+
+</div>
+
+<div class="song-info">
+
+<div>Original Key: D</div>
+
+<div>Capo: None</div>
+
+<div>4/4</div>
+
+</div>
+
+</div>
+
+<div class="container">
+
+<div class="song">
+
+
+<pre id="song">
+[Intro]
+
+<span class="chord">D</span> <span class="chord">G</span> <span class="chord">D/F#</span> <span class="chord">G</span>
+
+<hr>
+[Verse 1]
+
+<span class="chord">D</span>                             <span class="chord">G</span>
+Every tribe will see Your glory
+
+<span class="chord">D</span>                       <span class="chord">G</span>
+Every nation bow before You
+
+<span class="chord">D</span>                             <span class="chord">G</span>
+All our treasure turned to ashes
+
+               <span class="chord">D/F#</span>          <span class="chord">G</span>
+In the light of You
+
+<hr>
+[Pre-Chorus]
+
+<span class="chord">G</span> <span class="chord">D/F#</span> <span class="chord">Em</span> <span class="chord">D</span>
+As we're singing
+
+<span class="chord">A</span>                     <span class="chord">Bm</span>
+Holy is the Lord Almighty
+
+                <span class="chord">A</span>
+Only You are worthy
+
+              <span class="chord">G</span>
+Worthy of it all
+
+<hr>
+[Verse 1]
+
+<span class="chord">D</span>                             <span class="chord">G</span>
+Every tribe will see Your glory
+
+<span class="chord">D</span>                       <span class="chord">G</span>
+Every nation bow before You
+
+<span class="chord">D</span>                             <span class="chord">G</span>
+All our treasure turned to ashes
+
+               <span class="chord">D/F#</span>          <span class="chord">G</span>
+In the light of You
+
+<hr>
+[Pre-Chorus]
+
+<span class="chord">G</span> <span class="chord">D/F#</span> <span class="chord">Em</span> <span class="chord">D</span>
+As we're singing
+
+<span class="chord">A</span>                     <span class="chord">Bm</span>
+Holy is the Lord Almighty
+
+                <span class="chord">A</span>
+Only You are worthy
+
+              <span class="chord">G</span>
+Worthy of it all
+
+
+
+<hr>
+[Chorus]
+
+<span class="chord">D</span>
+Praise and glory
+
+<span class="chord">D</span>
+Honor and strength
+
+<span class="chord">G</span>
+Unto our God
+
+<span class="chord">G</span>
+Unto our God
+
+<span class="chord">Bm</span>
+Matchless, endless
+
+<span class="chord">Bm</span>
+Love unrestrained
+
+<span class="chord">G</span>
+This is our God
+
+<hr>
+
+<span class="chord">G</span>
+Every tribe sing
+
+<span class="chord">D</span>
+Praise and glory
+
+<span class="chord">D</span>
+Honor and strength
+
+<span class="chord">G</span>
+Unto our God
+
+<span class="chord">G</span>
+Unto our God
+
+<span class="chord">Bm</span>
+Matchless, endless
+
+<span class="chord">Bm</span>
+Love unrestrained
+
+<span class="chord">G</span>
+This is our God
+
+<span class="chord">G</span>
+Every tribe sing
+
+<hr>
+[Post-Chorus]
+
+<span class="chord">D</span>
+Ayo-ayo-ayo-waa
+
+<span class="chord">G</span>
+Ayo-ayo-ayo-waa We sing
+
+<span class="chord">D</span>
+Ayo-ayo-ayo-waa
+
+<span class="chord">G</span>
+Ayo-ayo-ayo-waa Oh-ohh
+
+<hr>
+[Bridge]
+
+<span class="chord">D</span>
+There is no one like our God
+(No one)
+
+<span class="chord">G</span>
+There is no one like our God
+
+<span class="chord">D</span>
+There is no one like our God
+
+<span class="chord">G</span>
+There is no one like our God
+
+<span class="chord">D</span>
+Wala kang katulad O Dios
+
+<span class="chord">G</span>
+Wala kang katulad O Dios
+
+<span class="chord">D</span>
+No hay nadie como nuestro Dios
+
+<span class="chord">G</span>
+No hay nadie como nuestro Dios
+
+<span class="chord">D</span>
+There is no one like our God
+(We sing)
+
+<span class="chord">G</span>
+There is no one like our God
+
+<span class="chord">Bm</span>
+There is no one like our God
+
+<span class="chord">G</span>
+There is no one like our God
+
+<hr>
+[Chorus]
+
+<span class="chord">D</span>
+Praise and glory
+
+<span class="chord">D</span>
+Honor and strength
+
+<span class="chord">G</span>
+Unto our God
+
+<span class="chord">G</span>
+Unto our God
+
+<span class="chord">Bm</span>
+You're matchless, endless
+
+<span class="chord">Bm</span>
+Love unrestrained
+
+<span class="chord">G</span>
+This is our God
+
+<span class="chord">G</span>
+Every tribe sing
+
+<span class="chord">D</span>
+Praise and glory
+
+<span class="chord">D</span>
+Honor and strength
+
+<span class="chord">G</span>
+Unto our God
+
+<span class="chord">G</span>
+Unto our God
+
+<span class="chord">Bm</span>
+You're matchless, endless
+
+<span class="chord">Bm</span>
+Love unrestrained
+
+<span class="chord">G</span>
+This is our God
+
+<span class="chord">G</span>			<span class="chord">D</span>
+This is our God
+
+</pre>
+
+
+</div>
+
+</div>
+
+<script>
+
+// ==========================
+// SIMPLE TRANSPOSE ENGINE
+// ==========================
+
+const notes = [
+    "C","C#","D","D#","E","F",
+    "F#","G","G#","A","A#","B"
+];
+
+const flatToSharp = {
+    Db:"C#",
+    Eb:"D#",
+    Gb:"F#",
+    Ab:"G#",
+    Bb:"A#"
+};
+
+let transpose = 0;
+
+const song = document.getElementById("song");
+const keyDisplay = document.getElementById("currentKey");
+
+const originalHTML = song.innerHTML;
+
+// Convert flats to sharps
+function normalize(chord){
+
+    if(flatToSharp[chord])
+        return flatToSharp[chord];
+
+    return chord;
+
+}
+
+// Change ONE chord
+function transposeChord(chord){
+
+    // Root
+    let match = chord.match(/^[A-G](#|b)?/);
+
+    if(!match)
+        return chord;
+
+    let root = normalize(match[0]);
+
+    let index = notes.indexOf(root);
+
+    if(index==-1)
+        return chord;
+
+    let newRoot = notes[(index+transpose+12)%12];
+
+    return chord.replace(match[0],newRoot);
+
+}
+
+// Change every chord
+function updateSong(){
+
+    let html = originalHTML;
+
+    html = html.replace(
+        /<span class="chord">(.*?)<\/span>/g,
+        function(_, chord){
+
+            return `<span class="chord">${transposeChord(chord)}</span>`;
+
+        }
+    );
+
+    song.innerHTML = html;
+
+    // Update key display (Original D)
+    let idx = notes.indexOf("D");
+
+    keyDisplay.innerHTML =
+        "Key: " +
+        notes[(idx+transpose+12)%12];
+
+}
+
+// Buttons
+document
+.getElementById("transposeUp")
+.onclick=function(){
+
+    transpose++;
+
+    updateSong();
+
+};
+
+document
+.getElementById("transposeDown")
+.onclick=function(){
+
+    transpose--;
+
+    updateSong();
+
+};
+
+// ==========================
+// FONT SIZE
+// ==========================
+
+let size=22;
+
+const pre=song;
+
+document
+.getElementById("fontPlus")
+.onclick=function(){
+
+    size+=2;
+
+    pre.style.fontSize=size+"px";
+
+};
+
+document
+.getElementById("fontMinus")
+.onclick=function(){
+
+    if(size>12){
+
+        size-=2;
+
+        pre.style.fontSize=size+"px";
+
+    }
+
+};
+
+updateSong();
+
+</script>
+
+</body>
+</html>

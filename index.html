@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>PAW Songs</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+body{
+
+min-height:100vh;
+
+display:flex;
+
+justify-content:center;
+
+align-items:center;
+
+background:
+linear-gradient(135deg,#0f172a,#172554,#1e3a8a);
+
+overflow:hidden;
+
+}
+
+/* Background circles */
+
+body::before{
+
+content:"";
+
+position:fixed;
+
+width:350px;
+height:350px;
+
+border-radius:50%;
+
+background:#3b82f6;
+
+opacity:.18;
+
+top:-120px;
+left:-120px;
+
+filter:blur(30px);
+
+}
+
+body::after{
+
+content:"";
+
+position:fixed;
+
+width:420px;
+height:420px;
+
+border-radius:50%;
+
+background:#60a5fa;
+
+opacity:.15;
+
+bottom:-180px;
+right:-180px;
+
+filter:blur(35px);
+
+}
+
+/* Main Card */
+
+.wrapper{
+
+width:95%;
+
+max-width:420px;
+
+position:relative;
+
+z-index:5;
+
+}
+
+/* Glass Card */
+
+.card{
+
+background:rgba(255,255,255,.12);
+
+backdrop-filter:blur(18px);
+
+border:1px solid rgba(255,255,255,.15);
+
+border-radius:30px;
+
+padding:35px;
+
+text-align:center;
+
+box-shadow:
+
+0 20px 60px rgba(0,0,0,.35);
+
+transition:.35s;
+
+cursor:pointer;
+
+}
+
+.card:hover{
+
+transform:translateY(-8px);
+
+}
+
+/* Title */
+
+.month{
+
+font-size:45px;
+
+font-weight:700;
+
+letter-spacing:8px;
+
+color:white;
+
+margin-bottom:25px;
+
+}
+
+/* Calendar */
+
+.calendar{
+
+background:white;
+
+border-radius:25px;
+
+overflow:hidden;
+
+}
+
+/* Red Header */
+
+.calendar-top{
+
+background:#ef4444;
+
+padding:16px;
+
+color:white;
+
+font-size:18px;
+
+font-weight:600;
+
+letter-spacing:3px;
+
+}
+
+/* Date */
+
+.date{
+
+padding:40px 0;
+
+font-size:95px;
+
+font-weight:700;
+
+color:#111827;
+
+line-height:1;
+
+}
+
+/* Sunday */
+
+.day{
+
+padding-bottom:25px;
+
+font-size:18px;
+
+font-weight:600;
+
+color:#6b7280;
+
+letter-spacing:2px;
+
+}
+
+/* Subtitle */
+
+.subtitle{
+
+margin-top:25px;
+
+font-size:15px;
+
+color:white;
+
+opacity:.85;
+
+letter-spacing:2px;
+
+}
+
+/* ===========================
+SONGS
+=========================== */
+
+.songMenu{
+
+display:none;
+
+animation:fade .35s ease;
+
+}
+
+.songTitle{
+
+font-size:34px;
+
+font-weight:700;
+
+margin-bottom:30px;
+
+color:white;
+
+letter-spacing:3px;
+
+}
+
+.songBtn{
+
+width:100%;
+
+padding:18px;
+
+margin-bottom:18px;
+
+border:none;
+
+border-radius:18px;
+
+background:rgba(255,255,255,.15);
+
+color:white;
+
+font-size:19px;
+
+font-weight:600;
+
+cursor:pointer;
+
+transition:.25s;
+
+backdrop-filter:blur(10px);
+
+}
+
+.songBtn:hover{
+
+background:#3b82f6;
+
+transform:translateY(-4px);
+
+}
+
+.back{
+
+margin-top:10px;
+
+width:100%;
+
+padding:15px;
+
+border:none;
+
+border-radius:16px;
+
+background:#ef4444;
+
+color:white;
+
+font-size:17px;
+
+cursor:pointer;
+
+transition:.25s;
+
+}
+
+.back:hover{
+
+background:#dc2626;
+
+}
+
+@keyframes fade{
+
+from{
+
+opacity:0;
+
+transform:translateY(30px);
+
+}
+
+to{
+
+opacity:1;
+
+transform:translateY(0);
+
+}
+
+}
+
+/* Mobile */
+
+@media(max-width:500px){
+
+.card{
+
+padding:25px;
+
+}
+
+.month{
+
+font-size:36px;
+
+letter-spacing:5px;
+
+}
+
+.date{
+
+font-size:75px;
+
+}
+
+.songTitle{
+
+font-size:28px;
+
+}
+
+.songBtn{
+
+font-size:17px;
+
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="wrapper">
+
+<div class="card" id="calendarPage">
+
+<div class="month">
+JULY
+</div>
+
+<div class="calendar">
+
+<div class="calendar-top">
+2026
+</div>
+
+<div class="date">
+19
+</div>
+
+<div class="day">
+SUNDAY
+</div>
+
+</div>
+
+<div class="subtitle">
+Praise & Worship
+</div>
+
+</div>
+
+
+<div class="songMenu" id="songPage">
+
+<div class="songTitle">
+Select Song
+</div>
+
+<button class="songBtn"
+onclick="window.location='fall.html'">
+
+🎵 Fall
+
+</button>
+
+<button class="songBtn"
+onclick="window.location='tribes.html'">
+
+🎵 Tribes
+
+</button>
+
+<button class="back" id="backBtn">
+
+← Back
+
+</button>
+
+</div>
+
+</div>
+
+<script>
+
+const calendar=document.getElementById("calendarPage");
+
+const songs=document.getElementById("songPage");
+
+const back=document.getElementById("backBtn");
+
+// ==============================
+// OPEN SONG MENU
+// ==============================
+
+calendar.addEventListener("click", () => {
+
+    calendar.style.transform = "scale(.92)";
+    calendar.style.opacity = "0";
+
+    setTimeout(() => {
+
+        calendar.style.display = "none";
+
+        songs.style.display = "block";
+
+    },250);
+
+});
+
+// ==============================
+// BACK TO CALENDAR
+// ==============================
+
+back.addEventListener("click", () => {
+
+    songs.style.display = "none";
+
+    calendar.style.display = "block";
+
+    setTimeout(() =>{
+
+        calendar.style.opacity = "1";
+        calendar.style.transform = "scale(1)";
+
+    },10);
+
+});
+
+// ==============================
+// LITTLE BUTTON ANIMATION
+// ==============================
+
+document.querySelectorAll(".songBtn").forEach(btn=>{
+
+    btn.addEventListener("mousedown",()=>{
+
+        btn.style.transform="scale(.96)";
+
+    });
+
+    btn.addEventListener("mouseup",()=>{
+
+        btn.style.transform="scale(1)";
+
+    });
+
+    btn.addEventListener("mouseleave",()=>{
+
+        btn.style.transform="scale(1)";
+
+    });
+
+});
+
+// ==============================
+// ENTER KEY SUPPORT
+// ==============================
+
+document.addEventListener("keydown",(e)=>{
+
+    if(e.key==="Escape"){
+
+        if(songs.style.display==="block"){
+
+            back.click();
+
+        }
+
+    }
+
+});
+
+</script>
+
+</body>
+</html>
